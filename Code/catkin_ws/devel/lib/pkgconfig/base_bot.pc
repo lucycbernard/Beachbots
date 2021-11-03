@@ -1,0 +1,8 @@
+prefix=/home/jimmy/mqp/Beachbots/Code/catkin_ws/devel
+
+Name: base_bot
+Description: Description of base_bot
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
