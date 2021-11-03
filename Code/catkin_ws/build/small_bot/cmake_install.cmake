@@ -56,3 +56,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/small_bot" TYPE PROGRAM FILES "/home/jimmy/mqp/Beachbots/Code/catkin_ws/build/small_bot/catkin_generated/installspace/Chassis.py")
 endif()
 
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/small_bot" TYPE PROGRAM FILES "/home/jimmy/mqp/Beachbots/Code/catkin_ws/build/small_bot/catkin_generated/installspace/IMU.py")
+endif()
+

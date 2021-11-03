@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # ==============================================================================
 # title           :AdafruitIMU.py
 # description     :Reads data from the onboard IMU

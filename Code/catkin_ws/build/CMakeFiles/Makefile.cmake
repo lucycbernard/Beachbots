@@ -23,6 +23,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/jimmy/mqp/Beachbots/Code/catkin_ws/src/small_bot/CMakeLists.txt"
   "/home/jimmy/mqp/Beachbots/Code/catkin_ws/src/small_bot/package.xml"
   "/home/jimmy/mqp/Beachbots/Code/catkin_ws/src/small_bot/src/Chassis.py"
+  "/home/jimmy/mqp/Beachbots/Code/catkin_ws/src/small_bot/src/IMU.py"
   "/opt/ros/noetic/share/catkin/cmake/all.cmake"
   "/opt/ros/noetic/share/catkin/cmake/assert.cmake"
   "/opt/ros/noetic/share/catkin/cmake/atomic_configure_file.cmake"
