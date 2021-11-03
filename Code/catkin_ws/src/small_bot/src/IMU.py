@@ -109,4 +109,4 @@ class IMU:
 
 if __name__ == "__main__":
     imu = IMU()
-    imu.headingPublisher() #run the control loop for the node
+    imu.publish_imu_data() #run the control loop for the node
