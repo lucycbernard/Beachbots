@@ -11,7 +11,7 @@
 #                 : Rate: [Int] rate in Hz at which IMU data should be published
 # ==============================================================================
 import rospy
-from std_msgs import Float32
+from std_msgs.msg import Float32
 import math
 import adafruit_bno055
 from adafruit_extended_bus import ExtendedI2C as I2C
