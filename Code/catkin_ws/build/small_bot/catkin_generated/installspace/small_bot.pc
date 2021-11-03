@@ -1,8 +1,0 @@
-prefix=/home/jimmy/mqp/Beachbots/Code/catkin_ws/install
-
-Name: small_bot
-Description: Description of small_bot
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
