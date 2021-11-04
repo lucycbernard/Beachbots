@@ -48,6 +48,15 @@ class IMU:
 
         rospy.sleep(1)
 
+    def isOutlier(self,yaw):
+        #If the new yaw value is more than 15 deg away from previous, return True.
+        if(abs(yaw - self.lastAngle) >= 15):
+            return True
+        else:
+            return False
+
+        
+
     def publish_imu_data(self):
         """
         Publish the IMU data until ros is shutdown
@@ -105,6 +114,9 @@ class IMU:
         if yaw_z == None:
             return self.lastAngle
         else:
+            # If new value is an outlier, use the previous value
+            if(self.isOutlier(yaw_z)):
+                yaw_z = self.lastAngle
             self.lastAngle = yaw_z
 
         return yaw_z
