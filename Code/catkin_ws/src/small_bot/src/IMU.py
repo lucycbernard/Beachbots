@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # ==============================================================================
-# title           :AdafruitIMU.py
+# title           :IMU.py
 # description     :Reads data from the onboard IMU
 # author          :James Casella, Dennis Chavez Romero, Spencer Gregg
-# date            :2021-01-25
+# date            :2021-11-03
 # version         :0.1
 # notes           :
 # python_version  :3.8
@@ -30,6 +30,8 @@ class IMU:
         # Fetch parameters from ros parameter service
         self.ID = rospy.get_param("~ID") # Get smallbot ID to name topics
         self.refresh_rate = rospy.get_param("~Rate") # Get the rate in Hz at which IMU data should be published
+        rospy.delete_param("~ID") # Get smallbot ID to name topics
+        rospy.delete_param("~Rate") # Get the rate in Hz at which IMU data should be published
 
         # create publisher for heading data on topic "SmallBot_ID/Chassis/IMU/Heading"
         self.headingPublisher = rospy.Publisher("SmallBot_" + self.ID + "/Chassis/IMU/Heading", Float32, queue_size=10)

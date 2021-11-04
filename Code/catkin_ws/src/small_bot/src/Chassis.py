@@ -2,20 +2,19 @@
 # ==============================================================================
 # title           :Chassis.py
 # description     :Node for small_bot drivetrain
-# author          :James Casella, Dennis Chavez Romero, Spencer Gregg, Yossef Naim
+# author          :James Casella, Dennis Chavez Romero, Spencer Gregg, Matthew Langkamp, Yossef Naim
 # date            :2021-11-03
 # version         :0.1
 # notes           :
 # python_version  :3.8
+# ros parameters  : 
 # ==============================================================================
 
+import rospy
+from std_msgs.msg import Float32
 import RPi.GPIO as GPIO
-from Arm import Arm
 from AdafruitIMU import AdafruitIMU
 import sys
-
-sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
-import Constants
 
 
 class Chassis:
@@ -24,18 +23,31 @@ class Chassis:
         """
         Class constructor
         """
+        # initialize ros node
+        rospy.init_node("IMU", anonymous=True)
+
+        # Fetch parameters from ros parameter service
+        self.ID = rospy.get_param("~ID") # Get smallbot ID to name topics
+        rospy.delete_param("~ID") # Get smallbot ID to name topics
+
+        # create publisher for heading data on topic "SmallBot_ID/Chassis/IMU/Heading"
+        # self.headingPublisher = rospy.Publisher("SmallBot_" + self.ID + "/Chassis/IMU/Heading", Float32, queue_size=10)
+        
+        # Subscribe to 
+        rospy.Subscriber("SmallBot_" + self.ID + "/Chassis/IMU/Heading", Float32, self.updateHeading)
+        self.heading = 0
 
         # Set PWM pins for motors
-        self.RPWMF = RPWMF  # RIGHT PWM FORWARDS
-        self.RPWMB = RPWMB  # RIGHT PWM BACKWARDS
-        self.LPWMF = LPWMF  # LEFT PWM FORWARDS
-        self.LPWMB = LPWMB  # LEFT PWM BACKWARDS
+        self.RPWMF = rospy.get_param("~RPWMF")  # RIGHT PWM FORWARDS
+        self.RPWMB = rospy.get_param("~RPWMB")  # RIGHT PWM BACKWARDS
+        self.LPWMF = rospy.get_param("~LPWMF")  # LEFT PWM FORWARDS
+        self.LPWMB = rospy.get_param("~LPWMB")  # LEFT PWM BACKWARDS
 
-        # Instantiate IMU object
-        self.IMU = AdafruitIMU()
-
-        # Instantiate arm object
-        self.arm = Arm(STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
+        rospy.delete_param("~RPWMF")  # RIGHT PWM FORWARDS
+        rospy.delete_param("~RPWMB")  # RIGHT PWM BACKWARDS
+        rospy.delete_param("~LPWMF")  # LEFT PWM FORWARDS
+        rospy.delete_param("~LPWMB")  # LEFT PWM BACKWARDS
+        
 
         # Disable warnings
         GPIO.setwarnings(False)
@@ -218,3 +230,25 @@ class Chassis:
 
         # Write calculated wheel efforts to chassis
         self.drive(right_speed, left_speed)
+
+    def updateHeading(self,data):
+        """
+        Updates the heading stored within the class
+        :param data         [std_msgs.msg.Float32] current robot heading
+        """
+        self.heading = data.data
+
+    def spinDeg(self,deg):
+        """
+        Spins the robot to the given heading in degrees
+        :param deg  [float] desired heading in degrees
+        """
+        while not rospy.is_shutdown():
+            e = self.heading - deg
+            self.drive(e,-e)
+
+
+
+if __name__ == "__main__":
+    chassis = Chassis()
+    chassis.spinDeg(90)

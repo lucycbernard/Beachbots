@@ -1,0 +1,25 @@
+<launch>
+    <!-- Arguments -->
+    <arg name="ID" value="1" doc="The ID of the smallbot"/>
+    <arg name="Rate" value="1" doc="The rate in Hz at which the IMU should publish the heading"/>
+    <arg name="RPWMF" value="22" doc="Right PWM Forwards Pin"/>
+    <arg name="RPWMB" value="29" doc="Right PWM Backwards Pin"/>
+    <arg name="LPWMF" value="31" doc="Left PWM Forwards Pin"/>
+    <arg name="LPWMB" value="36" doc="Left PWM Backwards Pin"/>
+    
+
+    <!-- Nodes -->
+    <node name="IMU" pkg="small_bot" type="IMU.py">
+        <param name="ID" value="$(arg ID)" type="str"/>
+        <param name="Rate" value="$(arg Rate)" type="int"/>
+        <!-- To listen to this node: $ rostopic echo /SmallBot_ID/Chassis/IMU/Heading -->
+    </node>
+    <node name="Chassis" pkg="small_bot" type="Chassis.py">
+        <param name="ID" value="$(arg ID)" type="str"/>
+        <param name="RPWMF" value="$(arg RPWMF)" type="int"/>
+        <param name="RPWMB" value="$(arg RPWMB)" type="int"/>
+        <param name="LPWMF" value="$(arg LPWMF)" type="int"/>
+        <param name="LPWMB" value="$(arg LPWMB)" type="int"/>
+    </node>
+
+</launch>
