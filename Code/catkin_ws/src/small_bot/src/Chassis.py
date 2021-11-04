@@ -13,7 +13,6 @@
 import rospy
 from std_msgs.msg import Float32
 import RPi.GPIO as GPIO
-from AdafruitIMU import AdafruitIMU
 import sys
 
 
