@@ -11,6 +11,7 @@
 # ==============================================================================
 
 import rospy
+from small_bot.msg import DriveHeading
 from std_msgs.msg import Float32
 import RPi.GPIO as GPIO
 import sys
@@ -34,7 +35,10 @@ class Chassis:
         
         # Subscribe to 
         rospy.Subscriber("SmallBot_" + self.ID + "/Chassis/IMU/Heading", Float32, self.updateHeading)
-        self.heading = 0
+        rospy.Subscriber("SmallBot_" + self.ID + "/Chassis/Move", DriveHeading, self.updateWantedHeading)
+        self.currentHeading = 0
+        self.wantedHeading = 0
+        self.wantedSpeed = 0
 
         # Set PWM pins for motors
         self.RPWMF = rospy.get_param("~RPWMF")  # RIGHT PWM FORWARDS
@@ -87,6 +91,12 @@ class Chassis:
         :param left_speed      [int]  The wheel efforts for the left side of drivetrain.
         """
         # Define behavior for all possible effort combinations
+
+        # Limit motor effort to between -100 and 100.
+        if(abs(left_speed) > 100):
+            left_speed = (left_speed/abs(left_speed))*100
+        if(abs(right_speed) > 100):
+            right_speed = (right_speed/abs(right_speed))*100
 
         # Straight forward
         if (right_speed > 0) and (left_speed > 0):
@@ -212,32 +222,12 @@ class Chassis:
         # Return false if desired angle has not been achieved
         return False
 
-    def drive_straight_IMU(self, straight_speed, curr_angle):
-        """
-        Allows the drivetrain to drive straight while maintaining a desired heading by using a simple P controller
-        :param straight_speed     [int]  The wheel effort to apply while driving straight.
-        :param curr_angle         [int]  The desired heading to maintain while driving straight.
-        """
-
-        # Set the target as the desired angle
-        target = curr_angle
-
-        # Capture current yaw angle
-        absolute = self.IMU.get_yaw()
-
-        # Adjust wheel efforts accordingly
-        left_speed = straight_speed - (absolute - target)
-        right_speed = straight_speed + (absolute - target)
-
-        # Write calculated wheel efforts to chassis
-        self.drive(right_speed, left_speed)
-
     def updateHeading(self,data):
         """
         Updates the heading stored within the class
         :param data         [std_msgs.msg.Float32] current robot heading
         """
-        self.heading = data.data
+        self.currentHeading = data.data
 
     def spinDeg(self,deg):
         """
@@ -245,11 +235,46 @@ class Chassis:
         :param deg  [float] desired heading in degrees
         """
         while not rospy.is_shutdown():
-            e = self.heading - deg
+            e = self.currentHeading - deg
             self.drive(e,-e)
+
+    def updateWantedHeading(self, data):
+        """
+        Updates the wanted heading of the robot
+        Listener for heading and speed data
+        :param data [small_bot/DriveHeading] desired heading and speed of robot
+        """
+        self.wantedSpeed = data.speed
+        self.wantedHeading = data.heading
+
+
+    def driveAtHeading(self):
+        """
+        Allows the drivetrain to drive straight while maintaining a desired heading by using a simple P controller
+        :param straight_speed     [int]  The wheel effort to apply while driving straight.
+        :param curr_angle         [int]  The desired heading to maintain while driving straight.
+        """
+
+        # Set the target as the desired angle
+        target = self.wantedHeading
+
+        # Capture current yaw angle
+        absolute = self.currentHeading
+
+        # Adjust wheel efforts accordingly
+        left_speed = self.wantedSpeed - (absolute - target)
+        right_speed = self.wantedSpeed + (absolute - target)
+
+        # Write calculated wheel efforts to chassis if speed != 0
+        if(self.wantedSpeed == 0):
+            self.drive(0,0)
+        else:
+            self.drive(right_speed, left_speed)
+
 
 
 
 if __name__ == "__main__":
     chassis = Chassis()
-    chassis.spinDeg(45)
+    while not rospy.is_shutdown():
+        chassis.driveAtHeading()
