@@ -72,6 +72,8 @@ class Chassis:
         self.pi_lpwmf.start(0)
         self.pi_lpwmb.start(0)
 
+        rospy.sleep(1)
+
     def reset_heading(self):
         """
         Resets the IMU heading by declaring a new instance of the IMU

@@ -46,6 +46,8 @@ class IMU:
         # Temp variable
         self.lastAngle = 0
 
+        rospy.sleep(1)
+
     def publish_imu_data(self):
         """
         Publish the IMU data until ros is shutdown
