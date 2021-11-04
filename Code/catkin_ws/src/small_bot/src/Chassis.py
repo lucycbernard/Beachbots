@@ -23,7 +23,7 @@ class Chassis:
         Class constructor
         """
         # initialize ros node
-        rospy.init_node("IMU", anonymous=True)
+        rospy.init_node("Chassis", anonymous=True)
 
         # Fetch parameters from ros parameter service
         self.ID = rospy.get_param("~ID") # Get smallbot ID to name topics
@@ -252,4 +252,4 @@ class Chassis:
 
 if __name__ == "__main__":
     chassis = Chassis()
-    chassis.spinDeg(90)
+    chassis.spinDeg(45)

@@ -1,7 +1,7 @@
 <launch>
     <!-- Arguments -->
     <arg name="ID" value="1" doc="The ID of the smallbot"/>
-    <arg name="Rate" value="1" doc="The rate in Hz at which the IMU should publish the heading"/>
+    <arg name="Rate" value="30" doc="The rate in Hz at which the IMU should publish the heading"/>
 
 
     <!-- Nodes -->
