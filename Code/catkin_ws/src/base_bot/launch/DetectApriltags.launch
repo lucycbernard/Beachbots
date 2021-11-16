@@ -1,0 +1,13 @@
+<launch>
+
+    <!-- Launch apriltag continous detection -->
+    <include file="$(find apriltag_ros)/launch/continuous_detection.launch" />
+
+    <!-- Launch the camera parameters node -->
+    <node pkg="base_bot" type="CameraInfo.py" name="camera_info" />
+    <!-- Launch the camera publisher node -->
+    <node pkg="base_bot" type="WebcamPublisher.py" name="camera_topic" />
+
+    <!-- Publish a transformation for RVIZ to map usb frame onto world frame -->
+    <node pkg="tf" type="static_transform_publisher" name="world_to_usb_cam" args="0 0 0 -1.571 0 -1.571 /world /usb_cam 100" />
+</launch>
