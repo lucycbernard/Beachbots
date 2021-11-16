@@ -160,8 +160,8 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-  src/cv_ros.py
-  src/camera_info.py
+  src/WebcamPublisher.py
+  src/CameraInfo.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
