@@ -1,0 +1,6 @@
+[submodule "Code/catkin_ws/src/apriltag_ros"]
+	path = Code/catkin_ws/src/apriltag_ros
+	url = https://github.com/AprilRobotics/apriltag_ros.git
+[submodule "Code/catkin_ws/src/apriltag"]
+	path = Code/catkin_ws/src/apriltag
+	url = https://github.com/AprilRobotics/apriltag.git
