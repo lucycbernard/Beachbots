@@ -2,7 +2,7 @@
 # ==============================================================================
 # title           :CameraInfo.py
 # description     :Node to publish camera calibration info for apriltag detection
-# author          :James Casella, Dennis Chavez Romero
+# author          :James Casella
 # date            :2021-11-16
 # version         :0.1
 # notes           :

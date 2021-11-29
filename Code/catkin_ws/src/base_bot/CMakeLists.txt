@@ -162,6 +162,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   src/WebcamPublisher.py
   src/CameraInfo.py
+  src/BoundsDetection.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

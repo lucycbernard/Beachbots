@@ -2,7 +2,7 @@
 # ==============================================================================
 # title           :WebcamPublisher.py
 # description     :Node to publish opencv data to required topic for apriltag detection
-# author          :James Casella, Dennis Chavez Romero
+# author          :James Casella
 # date            :2021-11-16
 # version         :0.1
 # notes           :
