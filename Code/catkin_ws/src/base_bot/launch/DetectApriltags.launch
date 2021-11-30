@@ -1,5 +1,31 @@
 <launch>
 
+
+    <!-- Arguments -->
+    <arg name="Rate" value="30" doc="The rate in Hz at which the AprilTag detection should run"/>
+
+    <!--
+        To set the bounds of the robot, you must provide the ID of the AprilTag that the robot is using, and the bounds of the robot's drivable area
+        As an example, given the following values:
+            AprilTag ID List -> "1 2 5"
+            AprilTag Lower Bounds -> "-5 0 5"
+            AprilTag Upper Bounds -> "0 5 10"
+
+            This combination of values tells the AprilTag detection that:
+                AprilTag 1's position should always be -5 < x < 0
+                AprilTag 2's position should always be  0 < x < 5
+                AprilTag 5's position should always be  5 < x < 10
+    -->
+    <arg name="AprilTag_ID_List" doc="The AprilTag ID's being used by the system as a list separated by spaces"
+        value="3" />
+    <arg name="AprilTag_Lower_Bounds" doc="The lower bound in meters of the AprilTag position, with values provided in the same order as in 'AprilTag ID List' "
+        value="-0.15" />
+    <arg name="AprilTag_Upper_Bounds" doc="The upper bound in meters of the AprilTag position, with values provided in the same order as in 'AprilTag ID List' "
+        value="0.15" />
+
+
+    <!-- Nodes -->
+
     <!-- Launch apriltag continous detection -->
     <include file="$(find apriltag_ros)/launch/continuous_detection.launch" />
 
@@ -7,6 +33,14 @@
     <node pkg="base_bot" type="CameraInfo.py" name="camera_info" />
     <!-- Launch the camera publisher node -->
     <node pkg="base_bot" type="WebcamPublisher.py" name="camera_topic" />
+    <!-- Launch the AprilTag processor node -->
+    <node pkg="base_bot" type="BoundsDetection.py" name="AprilTag_tracker">
+        <param name="Rate" value="$(arg Rate)" type="int"/>
+        <param name="ID List" value="$(arg AprilTag_ID_List)" type="str"/>
+        <param name="Lower List" value="$(arg AprilTag_Lower_Bounds)" type="str"/>
+        <param name="Upper List" value="$(arg AprilTag_Upper_Bounds)" type="str"/>
+
+    </node>
 
     <!-- Publish a transformation for RVIZ to map usb frame onto world frame -->
     <node pkg="tf" type="static_transform_publisher" name="world_to_usb_cam" args="0 0 0 -1.571 0 -1.571 /world /usb_cam 100" />
