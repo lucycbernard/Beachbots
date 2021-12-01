@@ -28,7 +28,19 @@ class Chassis:
 
         # Fetch parameters from ros parameter service
         self.ID = rospy.get_param("~ID") # Get smallbot ID to name topics
-        rospy.delete_param("~ID") # Get smallbot ID to name topics
+        self.Tag_ID = rospy.get_param("~Tag_ID") # Get the AprilTag number used on this SmallBot
+        self.RPWMF = rospy.get_param("~RPWMF")  # RIGHT PWM FORWARDS
+        self.RPWMB = rospy.get_param("~RPWMB")  # RIGHT PWM BACKWARDS
+        self.LPWMF = rospy.get_param("~LPWMF")  # LEFT PWM FORWARDS
+        self.LPWMB = rospy.get_param("~LPWMB")  # LEFT PWM BACKWARDS
+
+        # Clean parameter service
+        rospy.delete_param("~ID") 
+        rospy.delete_param("~Tag_ID")
+        rospy.delete_param("~RPWMF")  
+        rospy.delete_param("~RPWMB")  
+        rospy.delete_param("~LPWMF")  
+        rospy.delete_param("~LPWMB")  
 
         # create publisher for heading data on topic "SmallBot_ID/Chassis/IMU/Heading"
         # self.headingPublisher = rospy.Publisher("SmallBot_" + self.ID + "/Chassis/IMU/Heading", Float32, queue_size=10)
@@ -36,21 +48,10 @@ class Chassis:
         # Subscribe to 
         rospy.Subscriber("SmallBot_" + self.ID + "/Chassis/IMU/Heading", Float32, self.updateHeading)
         rospy.Subscriber("SmallBot_" + self.ID + "/Chassis/Move", DriveHeading, self.updateWantedHeading)
+        rospy.Subscriber("/tag_bounds/tag_" + self.Tag_ID, Bool, self.outOfBounds)
         self.currentHeading = 0
         self.wantedHeading = 0
         self.wantedSpeed = 0
-
-        # Set PWM pins for motors
-        self.RPWMF = rospy.get_param("~RPWMF")  # RIGHT PWM FORWARDS
-        self.RPWMB = rospy.get_param("~RPWMB")  # RIGHT PWM BACKWARDS
-        self.LPWMF = rospy.get_param("~LPWMF")  # LEFT PWM FORWARDS
-        self.LPWMB = rospy.get_param("~LPWMB")  # LEFT PWM BACKWARDS
-
-        rospy.delete_param("~RPWMF")  # RIGHT PWM FORWARDS
-        rospy.delete_param("~RPWMB")  # RIGHT PWM BACKWARDS
-        rospy.delete_param("~LPWMF")  # LEFT PWM FORWARDS
-        rospy.delete_param("~LPWMB")  # LEFT PWM BACKWARDS
-        
 
         # Disable warnings
         GPIO.setwarnings(False)
@@ -271,6 +272,27 @@ class Chassis:
         else:
             self.drive(right_speed, left_speed)
 
+    def outOfBounds(self, data):
+        """
+        Listener for when robot leaves cleaning bounds
+        Moves robot back into cleaning bounds
+        :param data     [bool] if the robot is currently out of bounds
+        """
+
+        # TODO
+        # Update the BoundsDetection to publish which side the robot is out of bounds on.
+        # <-1:left> <0:center> <1:right>
+        # Use here to make robot turn in correct direction
+        #
+
+        # flip current heading
+        if(self.currentHeading <= 0):
+            self.currentHeading = self.currentHeading + 180
+        else:
+            self.currentHeading = self.currentHeading - 180
+        
+            
+        
 
 
 
