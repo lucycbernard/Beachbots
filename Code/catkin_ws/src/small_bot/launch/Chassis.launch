@@ -6,6 +6,7 @@
     <arg name="RPWMB" value="29" doc="Right PWM Backwards Pin"/>
     <arg name="LPWMF" value="31" doc="Left PWM Forwards Pin"/>
     <arg name="LPWMB" value="36" doc="Left PWM Backwards Pin"/>
+    <arg name="Tag_ID" value="3" doc="AprilTag ID for this SmallBot"/>
     
 
     <!-- Nodes -->
@@ -20,6 +21,7 @@
         <param name="RPWMB" value="$(arg RPWMB)" type="int"/>
         <param name="LPWMF" value="$(arg LPWMF)" type="int"/>
         <param name="LPWMB" value="$(arg LPWMB)" type="int"/>
+        <param name="Tag_ID" value="$(arg Tag_ID" type="str"/>
     </node>
 
 </launch>
