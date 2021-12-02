@@ -282,7 +282,8 @@ class Chassis:
         # TODO
         # Update the BoundsDetection to publish which side the robot is out of bounds on.
         # <-1:left> <0:center> <1:right>
-        # Use here to make robot turn in correct direction
+        # so if -1 you must turn around to the right and if 1 you must turn around to the left
+        # keep track of last value to avoid turning around more
         #
 
         # flip current heading
