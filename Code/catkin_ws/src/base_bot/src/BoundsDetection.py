@@ -40,7 +40,7 @@ class BoundsDetection:
 
         # Create publisher for bounds data
         #self.pub = rospy.Publisher("/tag_bounds", Bool, queue_size=10)
-        # self.pub =  rospy.Publisher("/debug", String, queue_size=10)
+        self.pub =  rospy.Publisher("/debug", String, queue_size=10)
 
         # Create subscriber to listen to AprilTag data
         rospy.Subscriber("/tag_detections", AprilTagDetectionArray, self.handleAprilTag)
@@ -82,7 +82,10 @@ class BoundsDetection:
 
         for tag in ATArray.detections:
             xDist = tag.pose.pose.pose.position.x
-            # self.pub.publish(str(xDist))
+            yDist = tag.pose.pose.pose.position.y
+            zDist = tag.pose.pose.pose.position.z
+            toPub = "X: " + str(xDist) + "\nZ: " + str(zDist) + "\n"
+            self.pub.publish(toPub)
             # self.pub.publish(str(tag.id[0]))
             if xDist < self.lower_map[tag.id[0]]: 
                 self.pub_map[tag.id[0]].publish(-1)
