@@ -25,3 +25,6 @@
 [submodule "Code/catkin_ws/src/bond_core"]
 	path = Code/catkin_ws/src/bond_core
 	url = https://github.com/jacasella/bond_core
+[submodule "Code/catkin_ws/src/dynamic_reconfigure"]
+	path = Code/catkin_ws/src/dynamic_reconfigure
+	url = https://github.com/jacasella/dynamic_reconfigure
