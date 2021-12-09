@@ -13,3 +13,6 @@
 [submodule "Code/catkin_ws/src/common_msgs"]
 	path = Code/catkin_ws/src/common_msgs
 	url = https://github.com/jacasella/common_msgs.git
+[submodule "Code/catkin_ws/src/opencv"]
+	path = Code/catkin_ws/src/opencv
+	url = https://github.com/jacasella/opencv
