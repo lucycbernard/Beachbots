@@ -22,3 +22,6 @@
 [submodule "Code/catkin_ws/src/nodelet_core"]
 	path = Code/catkin_ws/src/nodelet_core
 	url = https://github.com/jacasella/nodelet_core
+[submodule "Code/catkin_ws/src/bond_core"]
+	path = Code/catkin_ws/src/bond_core
+	url = https://github.com/jacasella/bond_core
