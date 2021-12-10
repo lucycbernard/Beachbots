@@ -34,3 +34,6 @@
 [submodule "Code/catkin_ws/src/orocos_kinematics_dynamics"]
 	path = Code/catkin_ws/src/orocos_kinematics_dynamics
 	url = https://github.com/jacasella/orocos_kinematics_dynamics
+[submodule "Code/catkin_ws/src/angles"]
+	path = Code/catkin_ws/src/angles
+	url = https://github.com/jacasella/angles
