@@ -28,3 +28,6 @@
 [submodule "Code/catkin_ws/src/dynamic_reconfigure"]
 	path = Code/catkin_ws/src/dynamic_reconfigure
 	url = https://github.com/jacasella/dynamic_reconfigure
+[submodule "Code/catkin_ws/src/geometry"]
+	path = Code/catkin_ws/src/geometry
+	url = https://github.com/jacasella/geometry
