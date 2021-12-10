@@ -37,3 +37,6 @@
 [submodule "Code/catkin_ws/src/angles"]
 	path = Code/catkin_ws/src/angles
 	url = https://github.com/jacasella/angles
+[submodule "Code/catkin_ws/src/geometry2"]
+	path = Code/catkin_ws/src/geometry2
+	url = https://github.com/jacasella/geometry2
