@@ -40,3 +40,6 @@
 [submodule "Code/catkin_ws/src/geometry2"]
 	path = Code/catkin_ws/src/geometry2
 	url = https://github.com/jacasella/geometry2
+[submodule "Code/catkin_ws/src/actionlib"]
+	path = Code/catkin_ws/src/actionlib
+	url = https://github.com/jacasella/actionlib
