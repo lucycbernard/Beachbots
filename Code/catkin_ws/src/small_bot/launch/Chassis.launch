@@ -7,6 +7,7 @@
     <arg name="LPWMF" value="31" doc="Left PWM Forwards Pin"/>
     <arg name="LPWMB" value="36" doc="Left PWM Backwards Pin"/>
     <arg name="Tag_ID" value="3" doc="AprilTag ID for this SmallBot"/>
+    <arg name="Turn_Threshold" value = "5" doc="Number of consecutive matching turn values to start a turn at out-of-bounds"/>
     
 
     <!-- Nodes -->
@@ -21,7 +22,8 @@
         <param name="RPWMB" value="$(arg RPWMB)" type="int"/>
         <param name="LPWMF" value="$(arg LPWMF)" type="int"/>
         <param name="LPWMB" value="$(arg LPWMB)" type="int"/>
-        <param name="Tag_ID" value="$(arg Tag_ID" type="str"/>
+        <param name="Tag_ID" value="$(arg Tag_ID)" type="str"/>
+        <param name="Turn_Threshold" value="$(arg Turn_Threshold)" type="int"/>
     </node>
 
 </launch>

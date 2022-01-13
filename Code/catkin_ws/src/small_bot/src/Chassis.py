@@ -33,6 +33,7 @@ class Chassis:
         self.RPWMB = rospy.get_param("~RPWMB")  # RIGHT PWM BACKWARDS
         self.LPWMF = rospy.get_param("~LPWMF")  # LEFT PWM FORWARDS
         self.LPWMB = rospy.get_param("~LPWMB")  # LEFT PWM BACKWARDS
+        self.Turn_Threshold = rospy.get_param("~Turn_Threshold") # number of consecutive values to initiate turn
 
         # Clean parameter service
         rospy.delete_param("~ID") 
@@ -41,6 +42,7 @@ class Chassis:
         rospy.delete_param("~RPWMB")  
         rospy.delete_param("~LPWMF")  
         rospy.delete_param("~LPWMB")  
+        rospy.delete_param("~Turn_Threshold")
 
         # create publisher for heading data on topic "SmallBot_ID/Chassis/IMU/Heading"
         # self.headingPublisher = rospy.Publisher("SmallBot_" + self.ID + "/Chassis/IMU/Heading", Float32, queue_size=10)
@@ -76,6 +78,11 @@ class Chassis:
         self.pi_rpwmb.start(0)
         self.pi_lpwmf.start(0)
         self.pi_lpwmb.start(0)
+
+        # counters for handling bounds detection
+        self.leftCount = 0 # left count is number of -1's
+        self.rightCount = 0 # right count is number of 1's
+        self.lastTurnValue = 2 # last seen value -1/0/1 ; 2 is default value for nothing seen yet
 
         rospy.sleep(1)
 
@@ -286,15 +293,48 @@ class Chassis:
         # keep track of last value to avoid turning around more
         #
 
-        # flip current heading
-        if(self.currentHeading <= 0):
-            self.currentHeading = self.currentHeading + 180
-        else:
-            self.currentHeading = self.currentHeading - 180
-        
-            
-        
+        if(self.lastTurnValue == 2): # if no value has been seen, set the last value
+            self.lastTurnValue = data
+            return
 
+        # if the current reading doesn't match last reading, reset the count
+        if(data != self.lastTurnValue):
+            self.rightCount = 0
+            self.leftCount = 0
+
+        # if we received a consecutive -1
+        if(data == self.lastTurnValue and data == -1):
+            self.leftCount = self.leftCount + 1
+
+        # if we received a consecutive 1
+        if(data == self.lastTurnValue and data == 1):
+            self.leftCount = self.rightCount + 1
+
+        if(self.leftCount > self.Turn_Threshold):
+            self.handleTurn("right")
+
+        if(self.rightCount > self.Turn_Threshold):
+            self.handleTurn("left")
+
+        
+    def handleTurn(self, direction):
+        """
+        Turns the robot when a boundary is reached
+        :param direction [string] the direction in which to turn
+        """
+        
+        # error
+        if( direction != "left" and direction != "right"):
+            rospy.loginfo("Invalid value passed to handleTurn")
+            return
+
+        if( direction == "left"):
+            print("do stuff")
+
+        elif( direction == "right"):
+            print("do slightly different stuff")
+
+        
 
 
 if __name__ == "__main__":
