@@ -12,7 +12,7 @@
 
 import rospy
 from small_bot.msg import DriveHeading
-from std_msgs.msg import Float32
+from std_msgs.msg import Float32, Int16
 import RPi.GPIO as GPIO
 import sys
 
@@ -48,7 +48,7 @@ class Chassis:
         # Subscribe to 
         rospy.Subscriber("SmallBot_" + self.ID + "/Chassis/IMU/Heading", Float32, self.updateHeading)
         rospy.Subscriber("SmallBot_" + self.ID + "/Chassis/Move", DriveHeading, self.updateWantedHeading)
-        rospy.Subscriber("/tag_bounds/tag_" + self.Tag_ID, Bool, self.outOfBounds)
+        rospy.Subscriber("/tag_bounds/tag_" + self.Tag_ID, Int16, self.outOfBounds)
         self.currentHeading = 0
         self.wantedHeading = 0
         self.wantedSpeed = 0
