@@ -163,6 +163,8 @@ include_directories(
 catkin_install_python(PROGRAMS
   src/Chassis.py
   src/IMU.py
+  src/talker.py
+  src/listener.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
