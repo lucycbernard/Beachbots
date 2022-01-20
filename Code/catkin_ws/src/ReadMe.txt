@@ -13,6 +13,7 @@ Remember:
     $ sudo apt-get install libbondcpp-dev
     $ sudo apt-get install libbullet-dev
     $ sudo apt-get install libboost-python-dev
+    $ sudo apt-get install python-catkin-pkg
 
     Note on installing orocos
 	$ sudo apt-get install libeigen3-dev libcppunit-dev
