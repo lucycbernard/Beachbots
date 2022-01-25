@@ -61,3 +61,6 @@
 [submodule "Code/catkin_ws/src/std_msgs"]
 	path = Code/catkin_ws/src/std_msgs
 	url = https://github.com/jacasella/std_msgs
+[submodule "Code/catkin_ws/src/roscpp_core"]
+	path = Code/catkin_ws/src/roscpp_core
+	url = https://github.com/jacasella/roscpp_core
