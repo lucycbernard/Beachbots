@@ -43,3 +43,6 @@
 [submodule "Code/catkin_ws/src/actionlib"]
 	path = Code/catkin_ws/src/actionlib
 	url = https://github.com/jacasella/actionlib
+[submodule "Code/catkin_ws/src/message_generation"]
+	path = Code/catkin_ws/src/message_generation
+	url = https://github.com/jacasella/message_generation
