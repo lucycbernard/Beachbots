@@ -49,3 +49,6 @@
 [submodule "Code/catkin_ws/src/ros_comm"]
 	path = Code/catkin_ws/src/ros_comm
 	url = https://github.com/jacasella/ros_comm
+[submodule "Code/catkin_ws/src/geneus"]
+	path = Code/catkin_ws/src/geneus
+	url = https://github.com/jacasella/geneus
