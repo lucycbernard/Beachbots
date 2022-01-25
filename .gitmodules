@@ -52,3 +52,6 @@
 [submodule "Code/catkin_ws/src/geneus"]
 	path = Code/catkin_ws/src/geneus
 	url = https://github.com/jacasella/geneus
+[submodule "Code/catkin_ws/src/genmsg"]
+	path = Code/catkin_ws/src/genmsg
+	url = https://github.com/jacasella/genmsg
