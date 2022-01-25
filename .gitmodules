@@ -46,3 +46,6 @@
 [submodule "Code/catkin_ws/src/message_generation"]
 	path = Code/catkin_ws/src/message_generation
 	url = https://github.com/jacasella/message_generation
+[submodule "Code/catkin_ws/src/ros_comm"]
+	path = Code/catkin_ws/src/ros_comm
+	url = https://github.com/jacasella/ros_comm
