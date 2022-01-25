@@ -58,3 +58,6 @@
 [submodule "Code/catkin_ws/src/gennodejs"]
 	path = Code/catkin_ws/src/gennodejs
 	url = https://github.com/jacasella/gennodejs
+[submodule "Code/catkin_ws/src/std_msgs"]
+	path = Code/catkin_ws/src/std_msgs
+	url = https://github.com/jacasella/std_msgs
