@@ -12,7 +12,7 @@
 
 import rospy
 from small_bot.msg import DriveHeading
-from std_msgs.msg import Float32, Int16
+from std_msgs.msg import Float32, Int16, String
 import RPi.GPIO as GPIO
 import sys
 
@@ -83,6 +83,8 @@ class Chassis:
         self.leftCount = 0 # left count is number of -1's
         self.rightCount = 0 # right count is number of 1's
         self.lastTurnValue = 2 # last seen value -1/0/1 ; 2 is default value for nothing seen yet
+        #degubber
+        self.helppub = rospy.Publisher('/chatter', String, queue_size=10)
 
         rospy.sleep(1)
 
@@ -278,21 +280,25 @@ class Chassis:
             self.drive(0,0)
         else:
             self.drive(right_speed, left_speed)
+		
+        rospy.sleep(0.1)
 
     def outOfBounds(self, data):
         """
         Listener for when robot leaves cleaning bounds
         Moves robot back into cleaning bounds
-        :param data     [bool] if the robot is currently out of bounds
+        :param data     [int] side at which the robot is out of bounds
         """
-
         # TODO
         # Update the BoundsDetection to publish which side the robot is out of bounds on.
         # <-1:left> <0:center> <1:right>
         # so if -1 you must turn around to the right and if 1 you must turn around to the left
         # keep track of last value to avoid turning around more
-        #
-
+        
+        # get the int out of the msg
+        data = data.data
+        
+        self.helppub.publish("Saw a tag at " + str(data))
         if(self.lastTurnValue == 2): # if no value has been seen, set the last value
             self.lastTurnValue = data
             return
@@ -308,7 +314,7 @@ class Chassis:
 
         # if we received a consecutive 1
         if(data == self.lastTurnValue and data == 1):
-            self.leftCount = self.rightCount + 1
+            self.rightCount = self.rightCount + 1
 
         if(self.leftCount > self.Turn_Threshold):
             self.handleTurn("right")
@@ -316,6 +322,8 @@ class Chassis:
         if(self.rightCount > self.Turn_Threshold):
             self.handleTurn("left")
 
+        # reset the last seen value
+        self.lastTurnValue = data
         
     def handleTurn(self, direction):
         """
@@ -323,16 +331,20 @@ class Chassis:
         :param direction [string] the direction in which to turn
         """
         
+        # currently assumes robot is facing left to right from basebot perspective
+        
         # error
         if( direction != "left" and direction != "right"):
             rospy.loginfo("Invalid value passed to handleTurn")
             return
 
         if( direction == "left"):
-            print("do stuff")
+            self.drive(-20,-20)
+            self.helppub.publish("left")
 
         elif( direction == "right"):
-            print("do slightly different stuff")
+            self.drive(20,20)
+            self.helppub.publish("right")
 
         
 
@@ -340,4 +352,6 @@ class Chassis:
 if __name__ == "__main__":
     chassis = Chassis()
     while not rospy.is_shutdown():
-        chassis.driveAtHeading()
+#        chassis.driveAtHeading()
+        print("no end of file here")
+      

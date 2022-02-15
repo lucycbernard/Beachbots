@@ -38,7 +38,7 @@
 
 import rospy
 from std_msgs.msg import String
-from sensor_msgs.msg import Image # image type from camera
+#from sensor_msgs.msg import Image # image type from camera
 
 def callback(data):
     rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)

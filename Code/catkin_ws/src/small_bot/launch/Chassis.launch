@@ -8,14 +8,9 @@
     <arg name="LPWMB" value="36" doc="Left PWM Backwards Pin"/>
     <arg name="Tag_ID" value="3" doc="AprilTag ID for this SmallBot"/>
     <arg name="Turn_Threshold" value = "5" doc="Number of consecutive matching turn values to start a turn at out-of-bounds"/>
-    
+  
 
-    <!-- Nodes -->
-    <node name="IMU" pkg="small_bot" type="IMU.py">
-        <param name="ID" value="$(arg ID)" type="str"/>
-        <param name="Rate" value="$(arg Rate)" type="int"/>
-        <!-- To listen to this node: $ rostopic echo /SmallBot_ID/Chassis/IMU/Heading -->
-    </node>
+
     <node name="Chassis" pkg="small_bot" type="Chassis.py">
         <param name="ID" value="$(arg ID)" type="str"/>
         <param name="RPWMF" value="$(arg RPWMF)" type="int"/>
@@ -24,6 +19,15 @@
         <param name="LPWMB" value="$(arg LPWMB)" type="int"/>
         <param name="Tag_ID" value="$(arg Tag_ID)" type="str"/>
         <param name="Turn_Threshold" value="$(arg Turn_Threshold)" type="int"/>
-    </node>
+    </node>  
 
+    <!-- Nodes -->
+    <node name="IMU" pkg="small_bot" type="IMU.py">
+        <param name="ID" value="$(arg ID)" type="str"/>
+        <param name="Rate" value="$(arg Rate)" type="int"/>
+        <!-- To listen to this node: $ rostopic echo /SmallBot_ID/Chassis/IMU/Heading -->
+    </node>
+   
+  
+  
 </launch>
