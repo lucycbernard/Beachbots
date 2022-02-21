@@ -331,7 +331,17 @@ class Chassis:
         :param direction [string] the direction in which to turn
         """
         
-        # currently assumes robot is facing left to right from basebot perspective
+        # currently assumes robot is facing left to right from basebot perspective for
+        # driving straight code
+        
+        # want to set up to have process to be:
+        """
+        at start robot facing away from basebot, zero degrees at smallbot is pointing away from basebot
+        turn to -90 and start driving while cleaning
+        until robot goes far enough away:
+            if robot needs to turn back to the left, publish drive message at (-90, speed)
+            if robot needs to turn back to the right, publish drive message at (90, speed)
+        """
         
         # error
         if( direction != "left" and direction != "right"):
@@ -339,19 +349,31 @@ class Chassis:
             return
 
         if( direction == "left"):
-            self.drive(-20,-20)
-            self.helppub.publish("left")
+            #self.drive(-20,-20)
+            self.wantedHeading = -90
+            self.helppub.publish("turn left")
 
         elif( direction == "right"):
-            self.drive(20,20)
-            self.helppub.publish("right")
+            #self.drive(20,20)
+            self.wantedHeading = 90
+            self.helppub.publish("turn right")
 
-        
-
+            
+    def startMotion(self):
+        """
+        Starts the robot motion sequence by setting the target speed and heading variables
+        """
+        self.wantedSpeed = 20
+        self.wantedHeading = -90
 
 if __name__ == "__main__":
     chassis = Chassis()
+    
+    # wait 5 seconds then begin driving procedure
+    rospy.sleep(5)
+    
+    chassis.startMotion()
     while not rospy.is_shutdown():
-#        chassis.driveAtHeading()
-        print("no end of file here")
+        chassis.driveAtHeading()
+#        print("no end of file here")
       
