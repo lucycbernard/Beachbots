@@ -167,6 +167,7 @@ catkin_install_python(PROGRAMS
   src/IMU.py
   src/talker.py
   src/listener.py
+  src/Sifter.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
