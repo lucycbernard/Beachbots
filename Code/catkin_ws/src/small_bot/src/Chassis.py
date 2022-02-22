@@ -85,7 +85,8 @@ class Chassis:
         self.lastTurnValue = 2 # last seen value -1/0/1 ; 2 is default value for nothing seen yet
         #degubber
         self.helppub = rospy.Publisher('/chatter', String, queue_size=10)
-
+        # tracker for last turn executed
+        self.lastTurnPerformed = 0
         rospy.sleep(1)
 
     def reset_heading(self):
@@ -271,15 +272,15 @@ class Chassis:
         # Capture current yaw angle
         absolute = self.currentHeading
 
-	delta = absolute-target
+        delta = absolute-target
 
         # Adjust wheel efforts accordingly
-	if (abs(delta) <= 10):
-        	left_speed = self.wantedSpeed - (delta)
-        	right_speed = self.wantedSpeed + (delta)
-	else:
-		left_speed = -delta
-		right_speed = delta
+        if (abs(delta) <= 10):
+                left_speed = self.wantedSpeed - (delta)
+                right_speed = self.wantedSpeed + (delta)
+        else:
+                left_speed = -delta
+                right_speed = delta
 
         # Write calculated wheel efforts to chassis if speed != 0
         if(self.wantedSpeed == 0):
@@ -322,11 +323,13 @@ class Chassis:
         if(data == self.lastTurnValue and data == 1):
             self.rightCount = self.rightCount + 1
 
-        if(self.leftCount > self.Turn_Threshold):
+        if(self.leftCount > self.Turn_Threshold and not self.lastTurnPerformed == "right"):
             self.handleTurn("right")
+            self.lastTurnPerformed = "right"
 
-        if(self.rightCount > self.Turn_Threshold):
+        if(self.rightCount > self.Turn_Threshold and not self.lastTurnPerformed == "left"):
             self.handleTurn("left")
+            self.lastTurnPerformed = "left"
 
         # reset the last seen value
         self.lastTurnValue = data
@@ -356,11 +359,15 @@ class Chassis:
 
         if( direction == "left"):
             #self.drive(-20,-20)
+            self.wantedHeading = 0
+            rospy.sleep(3)
             self.wantedHeading = -90
             self.helppub.publish("turn left")
 
         elif( direction == "right"):
             #self.drive(20,20)
+            self.wantedHeading = 0
+            rospy.sleep(3)
             self.wantedHeading = 90
             self.helppub.publish("turn right")
 
