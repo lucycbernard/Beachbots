@@ -271,9 +271,15 @@ class Chassis:
         # Capture current yaw angle
         absolute = self.currentHeading
 
+	delta = absolute-target
+
         # Adjust wheel efforts accordingly
-        left_speed = self.wantedSpeed - (absolute - target)
-        right_speed = self.wantedSpeed + (absolute - target)
+	if (abs(delta) <= 10):
+        	left_speed = self.wantedSpeed - (delta)
+        	right_speed = self.wantedSpeed + (delta)
+	else:
+		left_speed = -delta
+		right_speed = delta
 
         # Write calculated wheel efforts to chassis if speed != 0
         if(self.wantedSpeed == 0):
@@ -374,7 +380,7 @@ if __name__ == "__main__":
     
     chassis.startMotion()
     while not rospy.is_shutdown():
-        chassis.drive(20,20)
-#        chassis.driveAtHeading()
+#        chassis.drive(20,20)
+        chassis.driveAtHeading()
 #        print("no end of file here")
       

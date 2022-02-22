@@ -115,8 +115,8 @@ class IMU:
             return self.lastAngle
         else:
             # If new value is an outlier, use the previous value
-            if(self.isOutlier(yaw_z)):
-                yaw_z = self.lastAngle
+            #if(self.isOutlier(yaw_z)):
+            #    yaw_z = self.lastAngle
             self.lastAngle = yaw_z
 
         return yaw_z
