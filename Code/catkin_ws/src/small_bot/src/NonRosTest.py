@@ -15,10 +15,10 @@ GPIO.setup(40, GPIO.OUT)
 GPIO.setup(37, GPIO.OUT)
 GPIO.setup(38, GPIO.OUT)
 GPIO.setup(38, GPIO.HIGH) #Enable stepper
-
+GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     
-t = 0.5
+t = 0.002
 
 lastTime = time.time()
 lastVal = False
@@ -30,11 +30,11 @@ while(True):
         lastVal = not lastVal
         GPIO.output(37, lastVal)
         lastTime = time.time()
-        print(lastVal)
+#         print(lastVal)
         count = count + 1
         
         
-    if(count >= 500):
-        direction = not direction
-        GPIO.output(40,direction)
-        count = 0
+#     if(count >= 500):
+#         direction = not direction
+#         GPIO.output(40,direction)
+#         count = 0

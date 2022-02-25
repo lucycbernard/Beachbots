@@ -2,7 +2,7 @@ import queue
 import rospy
 import RPi.GPIO as GPIO
 from time import time as time
-from std_msgs.msg import Float32, Bool
+from std_msgs.msg import Float32, Bool, String
 
 class Sifter:
     """
@@ -17,22 +17,27 @@ class Sifter:
         self.DIRPIN = rospy.get_param("~DIRPIN") # direction pin for stepper driver
         self.ENPIN = rospy.get_param("~ENPIN") # Enable pin for stepper driver
         self.HOMEPIN = rospy.get_param("~HOMEPIN") # homing switch pin for stepper
+        self.HOMEDIR = rospy.get_param("~HOMEDIR") # homing direction for stepper
 
         rospy.delete_param("~CLKPIN")
         rospy.delete_param("~DIRPIN")
         rospy.delete_param("~ENPIN")
         rospy.delete_param("~HOMEPIN")
+        rospy.delete_param("~HOMEDIR")
 
-        self.Stepper = StepperDriver(self.CLKPIN,self.DIRPIN,self.ENPIN,self.HOMEPIN)
+        self.Stepper = StepperDriver(self.CLKPIN,self.DIRPIN,self.ENPIN,self.HOMEPIN, self.HOMEDIR)
 
         rospy.Subscriber("Smallbot_" + self.ID + "/Sifter/Depth", Float32, self.setDepth)
         self.sifterAtDepthPublisher = rospy.Publisher("Smallbot_" + self.ID + "/Sifter/AtDepth", Bool, queue_size=10)
 
+        self.ChatterPublisher = rospy.Publisher("Smallbot_" + self.ID + "/Chatter", String, queue_size=10)
+
         self.wantedDepth = 0
         self.wasAtDepth = False #If the sifter was at depth last iteration
 
-        self.Stepper.enable()
         rospy.sleep(1)
+        
+        self.ChatterPublisher.publish("Sifter Initialized")
 
     def setDepth(self, data):
         """
@@ -40,17 +45,21 @@ class Sifter:
         Args:
             data (sts_msgs.msg.Float32): Wanted sifter height
         """
-        
+        self.ChatterPublisher.publish("Setting Depth")
         self.wantedDepth = data.data
         #Convert from wanted depth in mm to steps
         steps = self.wantedDepth*100
         self.Stepper.setWantedStepsFromHome(steps)
+        self.ChatterPublisher.publish("Set new depth to: " + str(steps))
 
     
     # Main loop here
     def run(self):
         self.Stepper.run() #State machine for stepper
         
+        self.ChatterPublisher.publish("Stepper Mode is: " + self.Stepper.mode)
+        #self.ChatterPublisher.publish(str(self.Stepper.wantedStepsFromHome) + "\t" + str(self.Stepper.currentStepsFromHome))
+
         # If the stepper has arrived at its position, and it wasnt there on the last loop iteration
         if(self.Stepper.arrivedAtPosition):
             self.sifterAtDepthPublisher.publish(True)
@@ -65,11 +74,12 @@ class StepperDriver:
     # To use this module, you should just need to initialize your stepper driver instance,
     # call the home function and wait for it to finish, and then call the setWantedStepsFromHome(wantedSteps) 
     # function to set the wanted position. The run() function must be called in a loop
-    def __init__(self, CLKPIN, DIRPIN, ENPIN, HOMEPIN):
+    def __init__(self, CLKPIN, DIRPIN, ENPIN, HOMEPIN, HOMEDIR):
         self.CLKPIN = CLKPIN  # Pin for stepper clk/step
         self.DIRPIN = DIRPIN # Pin for stepper driver direction
         self.ENPIN = ENPIN # Pin for stepper driver enable
         self.HOMEPIN = HOMEPIN # Pin for the homing switch
+        self.HOMEDIR = HOMEDIR
         self.currentStepsFromHome = 0
         self.wantedStepsFromHome = 0
         self.maxStepsPerSecond = 500 #Assuming 2ms minimum step time
@@ -77,7 +87,7 @@ class StepperDriver:
         self.clkVal = False
         self.lastTimeStepped = time()
         self.debug = False
-        self.mode = "ENABLED"
+        self.mode = "HOMING"
         self.arrivedAtPosition = False
 
         #Disable Warnings
@@ -92,7 +102,7 @@ class StepperDriver:
         GPIO.setup(self.ENPIN, GPIO.OUT)
 
         #Set homing pin as input
-        #GPIO.setup(self.HOMEPIN, GPIO.IN)
+        GPIO.setup(self.HOMEPIN, GPIO.IN, pull_up_down=GPIO.PUD_UP) #Setup homing pin as input pullup
 
 
     #Enables the stepper driver (sets en pin to high)
@@ -114,7 +124,18 @@ class StepperDriver:
 
     #Runs homing routine and zeros stepping position
     def home(self):
-        pass
+        self.setStepDirection(self.HOMEDIR)
+        GPIO.output(self.ENPIN, GPIO.HIGH) # Enable the stepper without setting the mode to enabled
+        
+        if(GPIO.input(self.HOMEPIN)):
+            self.mode = "ENABLED"
+            self.currentStepsFromHome = 0
+            return
+        
+        if(time() - (1/self.maxStepsPerSecond) > self.lastTimeStepped):
+            self.lastTimeStepped = time()
+            self.oscillateClk() # Step 
+        
 
     #Moves to given number of steps
     def setWantedStepsFromHome(self,wantedSteps):
@@ -147,12 +168,11 @@ class StepperDriver:
     def run(self):
         #If stepper is disabled, dont do anything
         if(self.mode == "DISABLED"):
-            print("Running disabled")
+#             print("Running disabled")
             return
         if(self.mode == "HOMING"):
-            print("Running homing")
-            pass
-            return
+#             print("Running homing")
+            self.home()
 
         #If stepper is enabled, and the wanted steps from home are not equal to the current steps from home, and enough time has elapsed
         elif(self.wantedStepsFromHome != self.currentStepsFromHome and self.wantedStepsFromHome != None and self.currentStepsFromHome != None and time() - (1/self.maxStepsPerSecond) > self.lastTimeStepped):
