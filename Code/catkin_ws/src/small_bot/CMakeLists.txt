@@ -168,6 +168,7 @@ catkin_install_python(PROGRAMS
   src/talker.py
   src/listener.py
   src/Sifter.py
+  src/Brush.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

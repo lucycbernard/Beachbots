@@ -1,3 +1,4 @@
+#!/usr/bin python
 import queue
 import rospy
 import RPi.GPIO as GPIO
@@ -25,13 +26,13 @@ class Brush:
 
         rospy.Subscriber("Smallbot_" + self.ID + "/Brush/Speed", Float32, self.setSpeed)
 
-        self.ChatterPublisher = rospy.Publisher("Smallbot_" + self.ID + "/Chatter", String, queue_size=10)
+        #self.ChatterPublisher = rospy.Publisher("Smallbot_" + self.ID + "/Chatter", String, queue_size=10)
 
         self.speed = 0
         
         rospy.sleep(1)
         
-        self.ChatterPublisher.publish("Brush Initialized")
+        #self.ChatterPublisher.publish("Brush Initialized")
 
     def setSpeed(self, data):
         """
@@ -39,7 +40,7 @@ class Brush:
         Args:
             data (sts_msgs.msg.Float32): Wanted brush speed ~-500 to 500. Represents max steps per second *2
         """
-        self.ChatterPublisher.publish("Setting Brush Speed")
+        #self.ChatterPublisher.publish("Setting Brush Speed")
         self.speed = data.data # Receive speed data
         self.Stepper.setSpeed(self.speed) # Set stepper speed
 
@@ -61,11 +62,12 @@ class StepperDriver:
         self.currentStepsFromHome = 0
         self.wantedStepsFromHome = 0
         self.maxStepsPerSecond = 0 #500 has been tested and works
+        self.wantedMaxStepsPerSecond = 0
         self.steppingDirection = False
         self.clkVal = False
         self.lastTimeStepped = time()
         self.debug = False
-        self.mode = "CONTINUOUS"
+        
         self.arrivedAtPosition = False
 
         #Disable Warnings
@@ -78,9 +80,14 @@ class StepperDriver:
         GPIO.setup(self.CLKPIN, GPIO.OUT)
         GPIO.setup(self.DIRPIN, GPIO.OUT)
         GPIO.setup(self.ENPIN, GPIO.OUT)
+        
+        self.enable()
+        self.mode = "CONTINUOUS"
+        self.speedIncrementTime = time()
 
-        #Set homing pin as input
-        GPIO.setup(self.HOMEPIN, GPIO.IN, pull_up_down=GPIO.PUD_UP) #Setup homing pin as input pullup
+        if(self.HOMEPIN != 0):
+            #Set homing pin as input
+            GPIO.setup(self.HOMEPIN, GPIO.IN, pull_up_down=GPIO.PUD_UP) #Setup homing pin as input pullup
 
 
     #Enables the stepper driver (sets en pin to high)
@@ -107,10 +114,10 @@ class StepperDriver:
         elif(speed > 0):
             self.setStepDirection(1)
         else:
-            self.maxStepsPerSecond = 0
+            self.wantedMaxStepsPerSecond = 0
             return
 
-        self.maxStepsPerSecond = abs(speed)
+        self.wantedMaxStepsPerSecond = abs(speed)
 
 
 
@@ -144,12 +151,23 @@ class StepperDriver:
             return
 
         # Otherwise, if the motor is set to continuous, run it at the speed
-        if(self.mode == "CONTINUOUS" and time() - (1/self.maxStepsPerSecond) > self.lastTimeStepped and self.maxStepsPerSecond != 0):
-            self.arrivedAtPosition = False
-            self.lastTimeStepped = time()
-            self.oscillateClk()
-            return
-        
+        try:
+            if(time() - self.speedIncrementTime > 0.001): 
+                if(self.maxStepsPerSecond < self.wantedMaxStepsPerSecond):
+                    self.maxStepsPerSecond = self.maxStepsPerSecond + 1
+                elif(self.maxStepsPerSecond > self.wantedMaxStepsPerSecond):
+                    self.maxStepsPerSecond = self.maxStepsPerSecond - 1
+                self.speedIncrementTime = time()
+                
+                
+            if(self.mode == "CONTINUOUS" and time() - (1/self.maxStepsPerSecond) > self.lastTimeStepped and self.maxStepsPerSecond != 0):
+                self.arrivedAtPosition = False
+                self.lastTimeStepped = time()
+                self.oscillateClk()
+                return
+        except:
+            #Catch divide by zero when the max steps per second is zero
+            pass
         
 
 if __name__ == "__main__":
