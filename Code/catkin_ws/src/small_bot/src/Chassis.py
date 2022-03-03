@@ -12,7 +12,7 @@
 
 import rospy
 from small_bot.msg import DriveHeading
-from std_msgs.msg import Float32, Int16, String
+from std_msgs.msg import Float32, Int16, String, Bool
 import RPi.GPIO as GPIO
 import sys
 
@@ -46,14 +46,19 @@ class Chassis:
 
         # create publisher for heading data on topic "SmallBot_ID/Chassis/IMU/Heading"
         # self.headingPublisher = rospy.Publisher("SmallBot_" + self.ID + "/Chassis/IMU/Heading", Float32, queue_size=10)
+
+        # Publish to
+        self.sifterDepthPublisher = rospy.Publisher("Smallbot_" + self.ID + "/Sifter/Depth", Float32, queue_size=10)
         
         # Subscribe to 
         rospy.Subscriber("SmallBot_" + self.ID + "/Chassis/IMU/Heading", Float32, self.updateHeading)
         rospy.Subscriber("SmallBot_" + self.ID + "/Chassis/Move", DriveHeading, self.updateWantedHeading)
         rospy.Subscriber("/tag_bounds/tag_" + self.Tag_ID, Int16, self.outOfBounds)
+        rospy.Subscriber("Smallbot_" + self.ID + "/Sifter/AtDepth", Bool, self.sifterAtDepth)
         self.currentHeading = 0
         self.wantedHeading = 0
         self.wantedSpeed = 0
+        self.robotSpeed = 20
 
         # Disable warnings
         GPIO.setwarnings(False)
@@ -83,10 +88,18 @@ class Chassis:
         self.leftCount = 0 # left count is number of -1's
         self.rightCount = 0 # right count is number of 1's
         self.lastTurnValue = 2 # last seen value -1/0/1 ; 2 is default value for nothing seen yet
+
         #degubber
         self.helppub = rospy.Publisher('/chatter', String, queue_size=10)
+
         # tracker for last turn executed
         self.lastTurnPerformed = 0
+        
+        # tracker for sifter
+        self.isSifterAtTarget = False
+        self.sifterUpDepth = 10 # depth in mm of sifter in either position, should make into ROS params later.
+        self.sifterDownDepth = 50
+
         rospy.sleep(1)
 
     def reset_heading(self):
@@ -357,27 +370,72 @@ class Chassis:
             rospy.loginfo("Invalid value passed to handleTurn")
             return
 
+        """
         if( direction == "left"):
-            #self.drive(-20,-20)
+            
             self.wantedHeading = 0
             rospy.sleep(3)
             self.wantedHeading = -90
             self.helppub.publish("turn left")
 
         elif( direction == "right"):
-            #self.drive(20,20)
+            
             self.wantedHeading = 0
             rospy.sleep(3)
             self.wantedHeading = 90
             self.helppub.publish("turn right")
+        """
+
+        # stop robot
+        self.wantedSpeed = 0
+
+        # raise sifter and wait for it to arrive
+        self.sifterDepthPublisher.publish(self.sifterUpDepth)
+        while( not self.isSifterAtTarget):
+            rospy.sleep(0.1)
+        self.isSifterAtTarget = False
+
+        # turn and drive forwards
+        self.wantedSpeed = self.robotSpeed
+        self.wantedHeading = 0
+        rospy.sleep(3)
+
+        # turn to start new line but stop once lined up
+        if( direction == "left"):
+            self.wantedHeading = -90
+        else:
+            self.wantedHeading = 90
+        while(abs(self.currentHeading - self.wantedHeading) > 10):
+            rospy.sleep(0.05)
+        self.wantedSpeed = 0
+
+        # lower sifter and wait for it to arrive
+        self.sifterDepthPublisher.publish(self.sifterDownDepth)
+        while( not self.isSifterAtTarget):
+            rospy.sleep(0.1)
+        self.isSifterAtTarget = False
+
+        # drive
+        self.wantedSpeed = self.robotSpeed
+
 
             
     def startMotion(self):
         """
         Starts the robot motion sequence by setting the target speed and heading variables
         """
-        self.wantedSpeed = 20
+        self.wantedSpeed = self.robotSpeed
         self.wantedHeading = -90
+
+
+    def sifterAtDepth(self, data):
+        """
+        Listens for data on if the sifter has reached the target depth, and updates the local variable when sifter
+        has treached the target depth
+        [param] data [Bool.msg] boolean message representing if the sifter is at target depth
+        """
+        if(data.data):
+            self.isSifterAtTarget = True
 
 if __name__ == "__main__":
     chassis = Chassis()
