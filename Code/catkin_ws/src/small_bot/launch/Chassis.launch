@@ -8,9 +8,17 @@
     <arg name="LPWMB" value="36" doc="Left PWM Backwards Pin"/>
     <arg name="Tag_ID" value="3" doc="AprilTag ID for this SmallBot"/>
     <arg name="Turn_Threshold" value = "5" doc="Number of consecutive matching turn values to start a turn at out-of-bounds"/>
+    <arg name="CLKPIN_BRUSH" value="13" doc="The Clock Pin of the sifter stepper motor"/>
+    <arg name="DIRPIN_BRUSH" value="16" doc="The Direction Pin of the sifter stepper motor"/>
+    <arg name="ENPIN_BRUSH" value="18" doc="The Enable Pin of the sifter stepper motor"/>
+    <arg name="CLKPIN" value="37" doc="The Clock Pin of the sifter stepper motor"/>
+    <arg name="DIRPIN" value="40" doc="The Direction Pin of the sifter stepper motor"/>
+    <arg name="ENPIN" value="38" doc="The Enable Pin of the sifter stepper motor"/>
+    <arg name="HOMEPIN" value="11" doc="The Home Pin of the sifter stepper motor homing switch"/>
+    <arg name="HOMEDIR" value="0" doc="The Homing direction of the sifter stepper motor"/>
   
 
-
+    <!-- Nodes -->
     <node name="Chassis" pkg="small_bot" type="Chassis.py">
         <param name="ID" value="$(arg ID)" type="str"/>
         <param name="RPWMF" value="$(arg RPWMF)" type="int"/>
@@ -21,13 +29,30 @@
         <param name="Turn_Threshold" value="$(arg Turn_Threshold)" type="int"/>
     </node>  
 
-    <!-- Nodes -->
+
     <node name="IMU" pkg="small_bot" type="IMU.py">
         <param name="ID" value="$(arg ID)" type="str"/>
         <param name="Rate" value="$(arg Rate)" type="int"/>
         <!-- To listen to this node: $ rostopic echo /SmallBot_ID/Chassis/IMU/Heading -->
     </node>
-   
+
+    <node name="Sifter" pkg="small_bot" type="Sifter.py">
+        <param name="ID" value="$(arg ID)" type="str"/>
+        <param name="CLKPIN" value="$(arg CLKPIN)" type="int"/>
+        <param name="DIRPIN" value="$(arg DIRPIN)" type="int"/>
+        <param name="ENPIN" value="$(arg ENPIN)" type="int"/>
+        <param name="HOMEPIN" value="$(arg HOMEPIN)" type="int"/>
+        <param name="HOMEDIR" value="$(arg HOMEDIR)" type="int"/>
+    </node>
+
+    <!--
+    <node name="Brush" pkg="small_bot" type="Brush.py">
+        <param name="ID" value="$(arg ID)" type="str"/>
+        <param name="CLKPIN_BRUSH" value="$(arg CLKPIN_BRUSH)" type="int"/>
+        <param name="DIRPIN_BRUSH" value="$(arg DIRPIN_BRUSH)" type="int"/>
+        <param name="ENPIN_BRUSH" value="$(arg ENPIN_BRUSH)" type="int"/>
+    </node>
+    -->
   
   
 </launch>

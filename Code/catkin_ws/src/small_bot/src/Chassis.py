@@ -97,8 +97,8 @@ class Chassis:
         
         # tracker for sifter
         self.isSifterAtTarget = False
-        self.sifterUpDepth = 10 # depth in mm of sifter in either position, should make into ROS params later.
-        self.sifterDownDepth = 50
+        self.sifterUpDepth = 85 # depth in mm of sifter in either position, should make into ROS params later.
+        self.sifterDownDepth = 95
 
         rospy.sleep(1)
 
@@ -299,6 +299,8 @@ class Chassis:
         if(self.wantedSpeed == 0):
             self.drive(0,0)
         else:
+            right_speed = self.robotSpeed * (right_speed/100.0)
+            left_speed = self.robotSpeed * (left_speed/100.0)
             self.drive(right_speed, left_speed)
 		
         rospy.sleep(0.1)
@@ -398,7 +400,7 @@ class Chassis:
         # turn and drive forwards
         self.wantedSpeed = self.robotSpeed
         self.wantedHeading = 0
-        rospy.sleep(3)
+        rospy.sleep(5)
 
         # turn to start new line but stop once lined up
         if( direction == "left"):
@@ -406,7 +408,7 @@ class Chassis:
         else:
             self.wantedHeading = 90
         while(abs(self.currentHeading - self.wantedHeading) > 10):
-            rospy.sleep(0.05)
+            rospy.sleep(0.1)
         self.wantedSpeed = 0
 
         # lower sifter and wait for it to arrive
@@ -423,7 +425,12 @@ class Chassis:
     def startMotion(self):
         """
         Starts the robot motion sequence by setting the target speed and heading variables
+        Waits for sifter to home
         """
+        while( not self.isSifterAtTarget):
+            rospy.sleep(0.1)
+        self.isSifterAtTarget = False
+
         self.wantedSpeed = self.robotSpeed
         self.wantedHeading = -90
 
@@ -445,7 +452,7 @@ if __name__ == "__main__":
     
     chassis.startMotion()
     while not rospy.is_shutdown():
-#        chassis.drive(20,20)
+#        chassis.drive(10,10)
         chassis.driveAtHeading()
 #        print("no end of file here")
       

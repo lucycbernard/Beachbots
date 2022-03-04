@@ -140,6 +140,7 @@ class StepperDriver:
     #Moves to given number of steps
     def setWantedStepsFromHome(self,wantedSteps):
         self.wantedStepsFromHome = wantedSteps
+        self.arrivedAtPosition = False
 
     def setStepDirection(self, increasing):
         if(increasing):
@@ -193,6 +194,9 @@ class StepperDriver:
 if __name__ == "__main__":
     sifter = Sifter()
     while not rospy.is_shutdown():
-        sifter.run()
+        if(sifter.Stepper.arrivedAtPosition):
+            rospy.sleep(0.1)
+        else:
+            sifter.run()
 
         
