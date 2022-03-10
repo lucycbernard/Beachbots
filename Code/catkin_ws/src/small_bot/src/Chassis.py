@@ -296,6 +296,10 @@ class Chassis:
         current_index = self.PID_index%self.PID_array_len
 
         # Add integral
+        try:
+            self.PID_array.pop(current_index)
+        except:
+            pass
         self.PID_array.insert(current_index, delta)
 
         # Calculate PID effort
