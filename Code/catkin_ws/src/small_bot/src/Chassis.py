@@ -100,6 +100,14 @@ class Chassis:
         self.sifterUpDepth = 10 # depth in mm of sifter in either position, should make into ROS params later.
         self.sifterDownDepth = 50
 
+        # PID constants
+        self.k_p = 1
+        self.k_i = 0
+        self.k_d = 0
+        self.PID_index = 1
+        self.PID_array = [0]
+        self.PID_array_len = 30
+
         rospy.sleep(1)
 
     def reset_heading(self):
@@ -274,9 +282,7 @@ class Chassis:
 
     def driveAtHeading(self):
         """
-        Allows the drivetrain to drive straight while maintaining a desired heading by using a simple P controller
-        :param straight_speed     [int]  The wheel effort to apply while driving straight.
-        :param curr_angle         [int]  The desired heading to maintain while driving straight.
+        Allows the drivetrain to drive straight while maintaining a desired heading by using a simple PID controller
         """
 
         # Set the target as the desired angle
@@ -287,13 +293,21 @@ class Chassis:
 
         delta = absolute-target
 
+        current_index = self.PID_index%self.PID_array_len
+
+        # Add integral
+        self.PID_array.insert(current_index, delta)
+
+        # Calculate PID effort
+        effort = self.k_p*delta + self.k_i*(sum(self.PID_array)) + self.k_d*(self.PID_array[current_index-1] - self.PID_array[current_index])
+
         # Adjust wheel efforts accordingly
         if (abs(delta) <= 10):
-                left_speed = self.wantedSpeed - (delta)
-                right_speed = self.wantedSpeed + (delta)
+                left_speed = self.wantedSpeed - (effort)
+                right_speed = self.wantedSpeed + (effort)
         else:
-                left_speed = -delta
-                right_speed = delta
+                left_speed = -effort
+                right_speed = effort
 
         # Write calculated wheel efforts to chassis if speed != 0
         if(self.wantedSpeed == 0):
@@ -301,6 +315,7 @@ class Chassis:
         else:
             self.drive(right_speed, left_speed)
 		
+        self.PID_index = self.PID_index + 1
         rospy.sleep(0.1)
 
     def outOfBounds(self, data):
