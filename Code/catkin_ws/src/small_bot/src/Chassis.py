@@ -293,25 +293,25 @@ class Chassis:
 
         delta = absolute-target
 
-        current_index = self.PID_index%self.PID_array_len
+        #current_index = self.PID_index%self.PID_array_len
 
         # Add integral
-        try:
-            self.PID_array.pop(current_index)
-        except:
-            pass
-        self.PID_array.insert(current_index, delta)
+        #try:
+        #    self.PID_array.pop(current_index)
+        #except:
+        #    pass
+        #self.PID_array.insert(current_index, delta)
 
         # Calculate PID effort
-        effort = self.k_p*delta + self.k_i*(sum(self.PID_array)) + self.k_d*(self.PID_array[current_index-1] - self.PID_array[current_index])
+        #effort = self.k_p*delta + self.k_i*(sum(self.PID_array)) + self.k_d*(self.PID_array[current_index-1] - self.PID_array[current_index])
 
         # Adjust wheel efforts accordingly
         if (abs(delta) <= 10):
-                left_speed = self.wantedSpeed - (effort)
-                right_speed = self.wantedSpeed + (effort)
+                left_speed = self.wantedSpeed - (delta)
+                right_speed = self.wantedSpeed + (delta)
         else:
-                left_speed = -effort
-                right_speed = effort
+                left_speed = -delta
+                right_speed = delta
 
         # Write calculated wheel efforts to chassis if speed != 0
         if(self.wantedSpeed == 0):
@@ -321,7 +321,7 @@ class Chassis:
             left_speed = self.robotSpeed * (left_speed/100.0)
             self.drive(right_speed, left_speed)
 		
-        self.PID_index = self.PID_index + 1
+        #self.PID_index = self.PID_index + 1
         rospy.sleep(0.1)
 
     def outOfBounds(self, data):
