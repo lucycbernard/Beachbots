@@ -1,0 +1,15 @@
+<launch>
+    <!-- Arguments -->
+    <arg name="ID" value="1" doc="The ID of the smallbot"/>
+    <arg name="Rate" value="30" doc="The rate in Hz at which the IMU should publish the heading"/>
+
+
+    <!-- Nodes -->
+    <node name="IMU" pkg="small_bot" type="IMU.py">
+        <param name="ID" value="$(arg ID)" type="str"/>
+        <param name="Rate" value="$(arg Rate)" type="int"/>
+        <!-- To listen to this node: $ rostopic echo /SmallBot_ID/Chassis/IMU/Heading -->
+    </node>
+
+
+</launch>

@@ -1,0 +1,66 @@
+[submodule "Code/catkin_ws/src/usb_cam"]
+	path = Code/catkin_ws/src/usb_cam
+	url = https://github.com/ros-drivers/usb_cam.git
+[submodule "Code/catkin_ws/src/apriltag_ros"]
+	path = Code/catkin_ws/src/apriltag_ros
+	url = https://github.com/jacasella/apriltag_ros.git
+[submodule "Code/catkin_ws/src/apriltag"]
+	path = Code/catkin_ws/src/apriltag
+	url = https://github.com/jacasella/apriltag.git
+[submodule "Code/catkin_ws/src/vision_opencv"]
+	path = Code/catkin_ws/src/vision_opencv
+	url = https://github.com/jacasella/vision_opencv.git
+[submodule "Code/catkin_ws/src/common_msgs"]
+	path = Code/catkin_ws/src/common_msgs
+	url = https://github.com/jacasella/common_msgs.git
+[submodule "Code/catkin_ws/src/opencv"]
+	path = Code/catkin_ws/src/opencv
+	url = https://github.com/jacasella/opencv
+[submodule "Code/catkin_ws/src/image_common"]
+	path = Code/catkin_ws/src/image_common
+	url = https://github.com/jacasella/image_common
+[submodule "Code/catkin_ws/src/nodelet_core"]
+	path = Code/catkin_ws/src/nodelet_core
+	url = https://github.com/jacasella/nodelet_core
+[submodule "Code/catkin_ws/src/bond_core"]
+	path = Code/catkin_ws/src/bond_core
+	url = https://github.com/jacasella/bond_core
+[submodule "Code/catkin_ws/src/dynamic_reconfigure"]
+	path = Code/catkin_ws/src/dynamic_reconfigure
+	url = https://github.com/jacasella/dynamic_reconfigure
+[submodule "Code/catkin_ws/src/geometry"]
+	path = Code/catkin_ws/src/geometry
+	url = https://github.com/jacasella/geometry
+[submodule "Code/catkin_ws/src/orocos_kinematics_dynamics"]
+	path = Code/catkin_ws/src/orocos_kinematics_dynamics
+	url = https://github.com/jacasella/orocos_kinematics_dynamics
+[submodule "Code/catkin_ws/src/angles"]
+	path = Code/catkin_ws/src/angles
+	url = https://github.com/jacasella/angles
+[submodule "Code/catkin_ws/src/geometry2"]
+	path = Code/catkin_ws/src/geometry2
+	url = https://github.com/jacasella/geometry2
+[submodule "Code/catkin_ws/src/actionlib"]
+	path = Code/catkin_ws/src/actionlib
+	url = https://github.com/jacasella/actionlib
+[submodule "Code/catkin_ws/src/message_generation"]
+	path = Code/catkin_ws/src/message_generation
+	url = https://github.com/jacasella/message_generation
+[submodule "Code/catkin_ws/src/ros_comm"]
+	path = Code/catkin_ws/src/ros_comm
+	url = https://github.com/jacasella/ros_comm
+[submodule "Code/catkin_ws/src/geneus"]
+	path = Code/catkin_ws/src/geneus
+	url = https://github.com/jacasella/geneus
+[submodule "Code/catkin_ws/src/genmsg"]
+	path = Code/catkin_ws/src/genmsg
+	url = https://github.com/jacasella/genmsg
+[submodule "Code/catkin_ws/src/gennodejs"]
+	path = Code/catkin_ws/src/gennodejs
+	url = https://github.com/jacasella/gennodejs
+[submodule "Code/catkin_ws/src/std_msgs"]
+	path = Code/catkin_ws/src/std_msgs
+	url = https://github.com/jacasella/std_msgs
+[submodule "Code/catkin_ws/src/roscpp_core"]
+	path = Code/catkin_ws/src/roscpp_core
+	url = https://github.com/jacasella/roscpp_core
