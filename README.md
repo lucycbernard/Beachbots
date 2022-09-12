@@ -1,5 +1,5 @@
-# beachbots2022
-This is the repository for the BeachBots MQP 2022
+# beachbots2023
+This is the repository for the BeachBots MQP 2023
 
 ## Code Architecture
 
