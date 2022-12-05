@@ -1,4 +1,4 @@
-<launch>
+<launch><!--
     <arg name="ID" value="1" doc="The ID of the smallbot"/>
     <arg name="CLKPIN_BRUSH" value="13" doc="The Clock Pin of the sifter stepper motor"/>
     <arg name="DIRPIN_BRUSH" value="16" doc="The Direction Pin of the sifter stepper motor"/>
@@ -10,5 +10,5 @@
         <param name="DIRPIN_BRUSH" value="$(arg DIRPIN_BRUSH)" type="int"/>
         <param name="ENPIN_BRUSH" value="$(arg ENPIN_BRUSH)" type="int"/>
     </node>
-
+-->
 </launch>

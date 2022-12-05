@@ -1,4 +1,5 @@
 <launch>
+<!--
     <arg name="ID" value="1" doc="The ID of the smallbot"/>
     <arg name="CLKPIN" value="37" doc="The Clock Pin of the sifter stepper motor"/>
     <arg name="DIRPIN" value="40" doc="The Direction Pin of the sifter stepper motor"/>
@@ -14,5 +15,5 @@
         <param name="HOMEPIN" value="$(arg HOMEPIN)" type="int"/>
         <param name="HOMEDIR" value="$(arg HOMEDIR)" type="int"/>
     </node>
-
+-->
 </launch>

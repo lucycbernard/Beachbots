@@ -8,9 +8,9 @@
     <arg name="LPWMB" value="36" doc="Left PWM Backwards Pin"/>
     <arg name="Tag_ID" value="3" doc="AprilTag ID for this SmallBot"/>
     <arg name="Turn_Threshold" value = "5" doc="Number of consecutive matching turn values to start a turn at out-of-bounds"/>
-    <arg name="CLKPIN_BRUSH" value="13" doc="The Clock Pin of the sifter stepper motor"/>
+    <!--<arg name="CLKPIN_BRUSH" value="13" doc="The Clock Pin of the sifter stepper motor"/>
     <arg name="DIRPIN_BRUSH" value="16" doc="The Direction Pin of the sifter stepper motor"/>
-    <arg name="ENPIN_BRUSH" value="18" doc="The Enable Pin of the sifter stepper motor"/>
+    <arg name="ENPIN_BRUSH" value="18" doc="The Enable Pin of the sifter stepper motor"/>-->
     <arg name="CLKPIN" value="37" doc="The Clock Pin of the sifter stepper motor"/>
     <arg name="DIRPIN" value="40" doc="The Direction Pin of the sifter stepper motor"/>
     <arg name="ENPIN" value="38" doc="The Enable Pin of the sifter stepper motor"/>
@@ -35,7 +35,7 @@
         <param name="Rate" value="$(arg Rate)" type="int"/>
         <!-- To listen to this node: $ rostopic echo /SmallBot_ID/Chassis/IMU/Heading -->
     </node>
-
+<!--
     <node name="Sifter" pkg="small_bot" type="Sifter.py">
         <param name="ID" value="$(arg ID)" type="str"/>
         <param name="CLKPIN" value="$(arg CLKPIN)" type="int"/>
@@ -45,7 +45,6 @@
         <param name="HOMEDIR" value="$(arg HOMEDIR)" type="int"/>
     </node>
 
-    <!--
     <node name="Brush" pkg="small_bot" type="Brush.py">
         <param name="ID" value="$(arg ID)" type="str"/>
         <param name="CLKPIN_BRUSH" value="$(arg CLKPIN_BRUSH)" type="int"/>
