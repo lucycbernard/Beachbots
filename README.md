@@ -44,7 +44,7 @@ password: raspberry
   roslaunch DetectAprilTags.launch
   ```
   
-&emsp; In second Putty window, ssh into the Smallbot (192.168.0.11)
+&emsp; In second Putty window, ssh into the Smallbot (SmallBot.local) (192.168.0.11)
   
 &emsp; In the terminal, enter username (pi) and password (raspberry)
   
