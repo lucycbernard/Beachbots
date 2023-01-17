@@ -11,14 +11,14 @@ Basebot IP: 192.168.0.10
 ### small_bot Package
 This package contains everything needed for the smallbot. The launch file is Smallbot.launch.
 
-Smallbot IP: 192.168.0.11
+Smallbot IP: 169.254.102.106
 
 ## How To Launch Basebot and Smallbot Code
 *For both the Smallbot and Basebot:
 
-username: pi
+username: beachbots.local
 
-password: raspberry
+password: pi
 
 
 
