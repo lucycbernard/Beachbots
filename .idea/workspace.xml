@@ -19,9 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="010edf30-7afd-4812-8907-8beaa92945c0" name="Default Changelist" comment="Updated README.md">
-      <change afterPath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/launch/ChassisNew.launch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/src/Chassisnew.py" afterDir="false" />
+    <list default="true" id="010edf30-7afd-4812-8907-8beaa92945c0" name="Default Changelist" comment="Created temp Chassis files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,6 +33,9 @@
         <option value="Python Script" />
       </list>
     </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="TestingMove" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">

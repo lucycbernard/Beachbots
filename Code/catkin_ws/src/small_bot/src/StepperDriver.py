@@ -1,4 +1,4 @@
-
+import rospy
 import RPi.GPIO as GPIO
 from time import time as time
 
@@ -11,10 +11,11 @@ class StepperDriver:
     # call the home function and wait for it to finish, and then call the setWantedStepsFromHome(wantedSteps) 
     # function to set the wanted position. The run() function must be called in a loop
     def __init__(self, CLKPIN, DIRPIN, ENPIN, HOMEPIN):
-        self.CLKPIN = CLKPIN  # Pin for stepper clk/step
-        self.DIRPIN = DIRPIN # Pin for stepper driver direction
-        self.ENPIN = ENPIN # Pin for stepper driver enable
-        self.HOMEPIN = HOMEPIN # Pin for the homing switch
+        self.ID = rospy.get_param("~ID")  # smallbot ID
+        self.CLKPIN = rospy.get_param("~CLKPIN")  # clock pin for stepper driver
+        self.DIRPIN = rospy.get_param("~DIRPIN")  # direction pin for stepper driver
+        self.ENPIN = rospy.get_param("~ENPIN")  # Enable pin for stepper driver
+        self.HOMEPIN = rospy.get_param("~HOMEPIN")  # homing switch pin for stepper
         self.currentStepsFromHome = 0
         self.wantedStepsFromHome = 0
         self.maxStepsPerSecond = 1000 #Assuming 1ms minimum step time
@@ -122,3 +123,11 @@ class StepperDriver:
             self.arrivedAtPosition = True
             if(self.debug):
                 print("Stepper motor in position")
+
+if __name__ == "__main__":
+    stepper = StepperDriver()
+    while not rospy.is_shutdown():
+        if(stepper.arrivedAtPosition):
+            rospy.sleep(0.1)
+        else:
+            sifter.run()
