@@ -1,0 +1,16 @@
+<script src="https://unpkg.com/@tensorflow/tfjs"></script>
+<script src="https://unpkg.com/@tensorflow/tfjs-automl"></script>
+<img id="daisy" crossorigin="anonymous" src="https://th.bing.com/th/id/R.520a9d17aa9a4d2a7e860127b57d6b0d?rik=TY8llVqUELkEoQ&riu=http%3a%2f%2fwww.bbc.co.uk%2fstaticarchive%2fca113ab55c28402ab86925d4ac294ebaf45f1927.jpg&ehk=ZMc2zCLHQylon14I%2bUA8KZ%2bzv07x9QGUoFWSihf6GPs%3d&risl=&pid=ImgRaw&r=0">
+<script>
+async function run() {
+  const model = await tf.automl.loadImageClassification('model.json');
+  const image = document.getElementById('daisy');
+  const predictions = await model.classify(image);
+  console.log(predictions);
+  // Show the resulting object on the page.
+  const pre = document.createElement('pre');
+  pre.textContent = JSON.stringify(predictions, null, 2);
+  document.body.append(pre);
+}
+run();
+</script>

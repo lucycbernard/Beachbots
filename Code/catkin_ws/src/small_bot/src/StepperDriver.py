@@ -1,3 +1,4 @@
+#!/usr/bin python
 import rospy
 import RPi.GPIO as GPIO
 from time import time as time
@@ -39,13 +40,6 @@ class StepperDriver:
 
         #Set homing pin as input
         GPIO.setup(self.HOMEPIN, GPIO.IN)
-
-        
-
-
-
-
-
 
 # Need to keep track of steps
 # Homing routine
@@ -130,4 +124,4 @@ if __name__ == "__main__":
         if(stepper.arrivedAtPosition):
             rospy.sleep(0.1)
         else:
-            sifter.run()
+            stepper.run()
