@@ -95,7 +95,7 @@ class StepperDriver:
 
     #To run in a loop (State Machine)
     def run(self):
-        #If stepper is disabled, dont do anything
+        #If stepper is disabled, don't do anything
         if(self.mode == "DISABLED"):
             print("Running disabled")
             return

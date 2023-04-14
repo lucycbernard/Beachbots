@@ -3,34 +3,30 @@ This is the repository for the BeachBots MQP 2023
 
 ## Code Architecture
 
-### base_bot Package
-This is where all the Basebot code is. The launch file is DetectApriltags.launch. 
-
-Basebot IP: 192.168.0.10
-
 ### small_bot Package
-This package contains everything needed for the smallbot. The launch file is Smallbot.launch.
+This package contains everything needed for the Smallbot. The launch file is Smallbot.launch.
 
-Smallbot IP: 169.254.102.106
+Smallbot IP: To get the ip address, you will have to connect to the rpi with an ethernet cable and run ifconfig.
+This ip address will stay static for a few weeks before changing for an unknown reason. This is something to debug.
 
-## How To Launch Basebot and Smallbot Code
-*For both the Smallbot and Basebot:
+## How To Launch Smallbot Code
+*For the Smallbot:
 
-username: beachbots.local
+username: pi
 
-password: pi
+password: Beachbots2023
 
 
 
 ### To launch the system:
 
-&emsp; Turn on both Smallbot and Basebot
+&emsp; Turn on both Smallbot
 
-&emsp; With your laptop, connect to "BasebotNetwork" wifi with the password "Wumpus3742"
+&emsp; With your laptop, connect to "WPI-Wireless" wifi
   
-&emsp; In Putty, ssh into the Basebot (192.168.0.10)
+&emsp; Open a VNC window using the rpi's ip address
   
-&emsp; In the terminal, enter username (pi) and password (raspberry)
+&emsp; Enter username (pi) and password (Beachbots2023)
   
 &emsp; Enter the following commands
   
@@ -41,47 +37,30 @@ password: pi
   sh OpenConnectedROS.sh
   ```
   ```
-  roslaunch DetectAprilTags.launch
-  ```
-  
-&emsp; In second Putty window, ssh into the Smallbot (SmallBot.local) (192.168.0.11)
-  
-&emsp; In the terminal, enter username (pi) and password (raspberry)
-  
-&emsp; Enter the following commands
-  
-  ```
-  cd Desktop
+  roslaunch Chassis.launch
   ```
   ```
-  sh OpenConnectedROS.sh
+  roslaunch Brush.launch
   ```
-  ```
-  roslaunch Smallbot.launch
-  ```
-  
-### Debugging
-To confirm that the Basebot is functioning and communicating with the Smallbot:
 
-In new Putty window with Basebot and Smallbot running, ssh into the Smallbot (192.168.0.11)
+### To drive the Smallbot:
 
-In the terminal, enter username (pi) and password (raspberry)
+&emsp; Enter one of the following letters on your keyboard and press enter:
 
-Enter the following command
+&emsp; S: Stop
 
-  ```
-  cd Desktop
-  ```
-  ```
-  sh OpenConnectedROS.sh
-  ```
-  ```
-  rostopic echo /tag_bounds/tag_3
-  ```  
-This will print the bounds of the AprilTag:
+&emsp; W: Straight forwards
 
-  -1 = left
-  
-  0 = center
-  
-  1 = right
+&emsp; X: Straight backwards
+
+&emsp; A: Left point turn
+
+&emsp; D: Right point turn
+
+&emsp; Q: Left swing turn
+
+&emsp; E: Right swing turn
+
+&emsp; C: 360 turn left
+
+&emsp; B: 360 turn right
