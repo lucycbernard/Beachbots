@@ -12,11 +12,11 @@ class Brush:
     def __init__(self):
         rospy.init_node("Brush", anonymous=True)
 
-        # Fetch parameters from ros parameter service
-        self.ID = rospy.get_param("~ID") # smallbot ID
-        self.CLKPIN = rospy.get_param("~CLKPIN_BRUSH") # clock pin for stepper driver
-        self.DIRPIN = rospy.get_param("~DIRPIN_BRUSH") # direction pin for stepper driver
-        self.ENPIN = rospy.get_param("~ENPIN_BRUSH") # Enable pin for stepper driver
+        #Fetch parameters from ros parameter service
+        self.ID = rospy.get_param("~ID") #Smallbot ID
+        self.CLKPIN = rospy.get_param("~CLKPIN_BRUSH") #Clock pin for stepper driver
+        self.DIRPIN = rospy.get_param("~DIRPIN_BRUSH") #Direction pin for stepper driver
+        self.ENPIN = rospy.get_param("~ENPIN_BRUSH") #Enable pin for stepper driver
         
         rospy.delete_param("~CLKPIN_BRUSH")
         rospy.delete_param("~DIRPIN_BRUSH")
@@ -41,23 +41,23 @@ class Brush:
             data (sts_msgs.msg.Float32): Wanted brush speed ~-500 to 500. Represents max steps per second *2
         """
         #self.ChatterPublisher.publish("Setting Brush Speed")
-        self.speed = data.data # Receive speed data
-        self.Stepper.setSpeed(self.speed) # Set stepper speed
+        self.speed = data.data #Receive speed data
+        self.Stepper.setSpeed(self.speed) #Set stepper speed
 
     
-    # Main loop here
+    #Main loop here
     def run(self):
         self.Stepper.run() #State machine for stepper
 
 class StepperDriver:
-    # To use this module, you should just need to initialize your stepper driver instance,
-    # call the home function and wait for it to finish, and then call the setWantedStepsFromHome(wantedSteps) 
-    # function to set the wanted position. The run() function must be called in a loop
+    #To use this module, you should just need to initialize your stepper driver instance,
+    #call the home function and wait for it to finish, and then call the setWantedStepsFromHome(wantedSteps)
+    #function to set the wanted position. The run() function must be called in a loop
     def __init__(self, CLKPIN, DIRPIN, ENPIN, HOMEPIN, HOMEDIR):
-        self.CLKPIN = CLKPIN  # Pin for stepper clk/step
-        self.DIRPIN = DIRPIN # Pin for stepper driver direction
-        self.ENPIN = ENPIN # Pin for stepper driver enable
-        self.HOMEPIN = HOMEPIN # Pin for the homing switch
+        self.CLKPIN = CLKPIN  #Pin for stepper clk/step
+        self.DIRPIN = DIRPIN #Pin for stepper driver direction
+        self.ENPIN = ENPIN #Pin for stepper driver enable
+        self.HOMEPIN = HOMEPIN #Pin for the homing switch
         self.HOMEDIR = HOMEDIR
         self.currentStepsFromHome = 0
         self.wantedStepsFromHome = 0
@@ -87,7 +87,7 @@ class StepperDriver:
 
         if(self.HOMEPIN != 0):
             #Set homing pin as input
-            GPIO.setup(self.HOMEPIN, GPIO.IN, pull_up_down=GPIO.PUD_UP) #Setup homing pin as input pullup
+            GPIO.setup(self.HOMEPIN, GPIO.IN, pull_up_down=GPIO.PUD_UP) #Setup homing pin as input pull-up
 
 
     #Enables the stepper driver (sets en pin to high)
@@ -109,9 +109,9 @@ class StepperDriver:
 
 
     def setSpeed(self, speed):
-        if(speed < 0):
+        if (speed < 0):
             self.setStepDirection(0)
-        elif(speed > 0):
+        elif (speed > 0):
             self.setStepDirection(1)
         else:
             self.wantedMaxStepsPerSecond = 0
@@ -135,22 +135,22 @@ class StepperDriver:
         GPIO.output(self.CLKPIN, self.clkVal)
 
         if(self.clkVal): #If it is the rising edge of the clk signal
-            if(self.steppingDirection): ############################### Might need to make the steps increment only on rising edge depending on if driver steps on either edge or just rising
+            if(self.steppingDirection): ###############################Might need to make the steps increment only on rising edge depending on if driver steps on either edge or just rising
                 self.currentStepsFromHome = self.currentStepsFromHome + 1
             else:
                 self.currentStepsFromHome = self.currentStepsFromHome - 1
 
         if(self.debug):
-            # print("Clock pin changed to: " + str(self.clkVal) + " at time " + str(time()))
+            #print("Clock pin changed to: " + str(self.clkVal) + " at time " + str(time()))
             print(self.currentStepsFromHome)
 
     #To run in a loop (State Machine)
     def run(self):
-        #If stepper is disabled, dont do anything
+        #If stepper is disabled, don't do anything
         if(self.mode == "DISABLED"):
             return
 
-        # Otherwise, if the motor is set to continuous, run it at the speed
+        #Otherwise, if the motor is set to continuous, run it at the speed
         try:
             if(time() - self.speedIncrementTime > 0.001): 
                 if(self.maxStepsPerSecond < self.wantedMaxStepsPerSecond):

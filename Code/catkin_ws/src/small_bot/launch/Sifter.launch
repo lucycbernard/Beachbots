@@ -1,9 +1,9 @@
 <launch>
 <!--
     <arg name="ID" value="1" doc="The ID of the smallbot"/>
-    <arg name="CLKPIN" value="37" doc="The Clock Pin of the sifter stepper motor"/>
+    <arg name="CLKPIN" value="37" 13 doc="The Clock Pin of the sifter stepper motor"/>
     <arg name="DIRPIN" value="40" doc="The Direction Pin of the sifter stepper motor"/>
-    <arg name="ENPIN" value="38" doc="The Enable Pin of the sifter stepper motor"/>
+    <arg name="ENPIN" value="38" 18 doc="The Enable Pin of the sifter stepper motor"/>
     <arg name="HOMEPIN" value="11" doc="The Home Pin of the sifter stepper motor homing switch"/>
     <arg name="HOMEDIR" value="0" doc="The Homing direction of the sifter stepper motor"/>
 

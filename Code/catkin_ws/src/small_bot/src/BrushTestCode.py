@@ -94,7 +94,7 @@ class StepperDriver:
                 self.currentStepsFromHome = self.currentStepsFromHome - 1
 
         if(self.debug):
-            # print("Clock pin changed to: " + str(self.clkVal) + " at time " + str(time()))
+            #print("Clock pin changed to: " + str(self.clkVal) + " at time " + str(time()))
             print(self.currentStepsFromHome)
 
     #To run in a loop (State Machine)

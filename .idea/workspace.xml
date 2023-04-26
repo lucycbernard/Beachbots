@@ -19,10 +19,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="010edf30-7afd-4812-8907-8beaa92945c0" name="Default Changelist" comment="Stepper driver code">
+    <list default="true" id="010edf30-7afd-4812-8907-8beaa92945c0" name="Default Changelist" comment="Updated readme">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/launch/Brush.launch" beforeDir="false" afterPath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/launch/Brush.launch" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/src/StepperDriver.py" beforeDir="false" afterPath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/src/StepperDriver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/launch/Sifter.launch" beforeDir="false" afterPath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/launch/Sifter.launch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/src/Brush.py" beforeDir="false" afterPath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/src/Brush.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/src/BrushTestCode.py" beforeDir="false" afterPath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/src/BrushTestCode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/src/Sifter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Code/catkin_ws/src/small_bot/src/Sifter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -130,7 +132,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680282944067</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Updated readme">
+      <created>1681496891081</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1681496891081</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -149,6 +158,7 @@
     <MESSAGE value="Made branch just for testing chassis" />
     <MESSAGE value="Updated README.md" />
     <MESSAGE value="Stepper driver code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Stepper driver code" />
+    <MESSAGE value="Updated readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated readme" />
   </component>
 </project>

@@ -1,3 +1,4 @@
+#!/usr/bin python
 import queue
 import rospy
 import RPi.GPIO as GPIO
